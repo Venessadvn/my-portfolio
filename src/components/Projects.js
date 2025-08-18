@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, Suspense } from 'react';
 import * as THREE from 'three';
+import { ExternalLink, Github, Eye, Code } from 'lucide-react';
 
 // 3D Background Scene Component
 const ProjectsThreeScene = () => {
@@ -126,6 +127,24 @@ const ProjectsThreeScene = () => {
 // Project Card Component
 const ProjectCard = ({ project, index }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+ // Determine project category based on tech stack
+const getProjectCategory = (tech) => {
+  if (!tech) return 'Other';   // 🔥 Prevents crash if undefined/null
+
+  if (tech.includes('Figma')) return 'Design';
+  if (tech.includes('Python') || tech.includes('Transformers') || tech.includes('Flask')) return 'AI/ML';
+  if (tech.includes('React') || tech.includes('HTML') || tech.includes('Spring Boot')) return 'Web App';
+  return 'Other';
+};
+
+const category = getProjectCategory(project.tech);
+
 
   return (
     <div 
@@ -136,34 +155,57 @@ const ProjectCard = ({ project, index }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Project Image */}
+      {/* Project Preview */}
       <div className="relative h-48 bg-gradient-to-br from-blue-400 to-purple-600 dark:from-blue-600 dark:to-purple-800 overflow-hidden">
-        <img 
-          src={project.image} 
-          alt={project.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-          onError={(e) => {
-            e.target.style.display = 'none';
-            e.target.nextSibling.style.display = 'flex';
-          }}
-        />
-        {/* Fallback gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-purple-600 dark:from-blue-600 dark:to-purple-800 flex items-center justify-center text-white text-6xl" style={{ display: 'none' }}>
-          💻
-        </div>
+        {!imageError ? (
+          <img 
+            src={project.preview} 
+            alt={`${project.name} preview`}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            onError={handleImageError}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-white text-4xl">
+            {category === 'Design' ? '🎨' : category === 'AI/ML' ? '🤖' : '💻'}
+          </div>
+        )}
         
         {/* Overlay */}
         <div className={`absolute inset-0 bg-gradient-to-t from-black/60 to-transparent transition-opacity duration-300 ${
           isHovered ? 'opacity-100' : 'opacity-0'
         }`} />
         
-        {/* Live Demo Button */}
-        <div className={`absolute top-4 right-4 transition-all duration-300 ${
+        {/* Category Badge */}
+        <div className="absolute top-4 left-4">
+          <span className="px-3 py-1 bg-black/50 backdrop-blur-sm text-white text-xs font-semibold rounded-full">
+            {category}
+          </span>
+        </div>
+
+        {/* Action Buttons on Hover */}
+        <div className={`absolute top-4 right-4 flex gap-2 transition-all duration-300 ${
           isHovered ? 'translate-x-0 opacity-100' : 'translate-x-4 opacity-0'
         }`}>
-          <button className="px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-full hover:bg-green-600 transition-colors duration-200">
-            Live Demo
-          </button>
+          <a
+            href={project.view}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors duration-200 group/btn"
+            title="View Project"
+          >
+            <Eye className="w-4 h-4" />
+          </a>
+          {project.code && (
+            <a
+              href={project.code}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 bg-gray-800 text-white rounded-full hover:bg-gray-900 transition-colors duration-200 group/btn"
+              title="View Code"
+            >
+              <Github className="w-4 h-4" />
+            </a>
+          )}
         </div>
       </div>
 
@@ -171,30 +213,8 @@ const ProjectCard = ({ project, index }) => {
       <div className="p-6">
         <div className="flex items-start justify-between mb-3">
           <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
-            {project.title}
+            {project.name}
           </h3>
-          <div className="flex space-x-2">
-            <a 
-              href={project.github} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
-            >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clipRule="evenodd" />
-              </svg>
-            </a>
-            <a 
-              href={project.live} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="p-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
-          </div>
         </div>
 
         <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3">
@@ -202,8 +222,8 @@ const ProjectCard = ({ project, index }) => {
         </p>
 
         {/* Tech Stack */}
-        <div className="flex flex-wrap gap-2 mb-4">
-          {project.technologies.map((tech, techIndex) => (
+        <div className="flex flex-wrap gap-2 mb-6">
+          {project.tech.map((tech, techIndex) => (
             <span 
               key={techIndex}
               className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-semibold rounded-full"
@@ -213,10 +233,34 @@ const ProjectCard = ({ project, index }) => {
           ))}
         </div>
 
-        {/* Project Stats */}
-        <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-          <span>{project.category}</span>
-          <span>{project.year}</span>
+        {/* Action Buttons */}
+        <div className="flex gap-3">
+          <a
+            href={project.view}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all duration-300 transform hover:scale-105"
+          >
+            <ExternalLink className="w-4 h-4" />
+            View
+          </a>
+          {project.code && (
+            <a
+              href={project.code}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 transform hover:scale-105"
+            >
+              <Code className="w-4 h-4" />
+              Code
+            </a>
+          )}
+          {!project.code && (
+            <div className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 font-semibold rounded-lg cursor-not-allowed">
+              <Code className="w-4 h-4" />
+              Design Only
+            </div>
+          )}
         </div>
       </div>
 
@@ -229,16 +273,25 @@ const ProjectCard = ({ project, index }) => {
 };
 
 // Filter Button Component
-const FilterButton = ({ category, activeFilter, onClick }) => (
+const FilterButton = ({ category, activeFilter, onClick, count }) => (
   <button
     onClick={() => onClick(category)}
-    className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 ${
+    className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 relative ${
       activeFilter === category
         ? 'bg-gradient-to-r from-blue-500 to-purple-500 dark:from-cyan-500 dark:to-blue-500 text-white shadow-lg'
         : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
     }`}
   >
     {category}
+    {count > 0 && (
+      <span className={`ml-2 px-2 py-1 text-xs rounded-full ${
+        activeFilter === category 
+          ? 'bg-white/20' 
+          : 'bg-gray-300 dark:bg-gray-600 text-gray-600 dark:text-gray-300'
+      }`}>
+        {count}
+      </span>
+    )}
   </button>
 );
 
@@ -247,84 +300,91 @@ const Projects = () => {
   const [activeFilter, setActiveFilter] = useState('All');
   const [filteredProjects, setFilteredProjects] = useState([]);
 
-  // Sample projects data
+  // Your actual projects data
   const projects = [
     {
-      id: 1,
-      title: "E-Commerce Platform",
-      description: "A full-stack e-commerce platform with React, Node.js, and MongoDB. Features include user authentication, payment integration, admin dashboard, and real-time inventory management.",
-      image: "/api/placeholder/400/250",
-      technologies: ["React", "Node.js", "MongoDB", "Stripe"],
-      category: "Web App",
-      year: "2024",
-      github: "#",
-      live: "#"
+      name: "Talent Hunt",
+      description: "A virtual talent evaluation system where contestants upload performances and judges score them category-wise.",
+      tech: ["React", "Spring Boot", "MySQL"],
+      preview: "/images/talenthunt.jpg",
+      code: "https://github.com/yourusername/farm-direct", 
+      view: "https://talent-hunt-demo.vercel.app"
     },
     {
-      id: 2,
-      title: "Task Management App",
-      description: "A collaborative task management application with real-time updates, drag-and-drop functionality, team collaboration features, and progress tracking.",
-      image: "/api/placeholder/400/250",
-      technologies: ["Vue.js", "Firebase", "Tailwind"],
-      category: "Web App",
-      year: "2024",
-      github: "#",
-      live: "#"
+      name: "Mind Mate",
+      description: "A mental wellness app that uses AI-driven chat support and resources for stress management.",
+      tech: ["Python", "Flask", "AI APIs"],
+      preview: "/images/mind-mate.jpg",
+      code: "https://github.com/yourusername/mind-mate",
+      view: "https://mindmate-demo.vercel.app"
     },
     {
-      id: 3,
-      title: "Weather Dashboard",
-      description: "A responsive weather dashboard that displays current weather, forecasts, and weather maps using real-time API data with beautiful data visualizations.",
-      image: "/api/placeholder/400/250",
-      technologies: ["React", "Chart.js", "API"],
-      category: "Web App",
-      year: "2023",
-      github: "#",
-      live: "#"
+      name: "Sentiment Analyzer",
+      description: "NLP-based sentiment analysis system using BERT to classify text emotions.",
+      tech: ["Python", "Transformers", "Hugging Face"],
+      preview: "/images/sentiment.jpg",
+      code: "https://huggingface.co/spaces/SreyaDvn/bert-sentiment-analyzer/tree/main",
+      view: "https://huggingface.co/spaces/SreyaDvn/bert-sentiment-analyzer"
     },
     {
-      id: 4,
-      title: "Mobile Fitness App",
-      description: "A React Native fitness tracking app with workout plans, progress tracking, social features, and integration with wearable devices.",
-      image: "/api/placeholder/400/250",
-      technologies: ["React Native", "Redux", "SQLite"],
-      category: "Mobile App",
-      year: "2024",
-      github: "#",
-      live: "#"
+      name: "Farm Direct",
+      description: "Farmer-to-customer app with emergency alerts, live marketplace, and regional language support.",
+      tech: ["Figma"],
+      preview: "/images/farmdirect.jpg",
+      code: null, // No code available, only Figma design
+      view: "https://farm-direct-demo.vercel.app"
     },
     {
-      id: 5,
-      title: "Brand Identity Design",
-      description: "Complete brand identity design for a tech startup including logo design, color palette, typography, business cards, and brand guidelines.",
-      image: "/api/placeholder/400/250",
-      technologies: ["Figma", "Illustrator", "Photoshop"],
-      category: "Design",
-      year: "2023",
-      github: "#",
-      live: "#"
+      name: "PTM Phosphorylation Predictor",
+      description: "Bioinformatics web app for predicting phosphorylation sites in protein sequences.",
+      tech: ["Python", "Flask"],
+      preview: "/images/ptm.jpg",
+      code: "https://github.com/yourusername/ptm-predictor",
+      view: "https://ptm-demo.vercel.app"
     },
     {
-      id: 6,
-      title: "3D Portfolio Website",
-      description: "An interactive 3D portfolio website built with Three.js featuring smooth animations, particle effects, and immersive user experience.",
-      image: "/api/placeholder/400/250",
-      technologies: ["Three.js", "React", "GSAP"],
-      category: "Web App",
-      year: "2024",
-      github: "#",
-      live: "#"
+      name: "Weather App",
+      description: "Weather forecasting app with real-time API integration and location-based forecasts.",
+      tech: ["HTML", "CSS", "Javascript", "OpenWeather API"],
+      preview: "/images/weather.jpg",
+      code: "https://github.com/yourusername/weather-app",
+      view: "https://weather-demo.vercel.app"
     }
   ];
 
-  const categories = ["All", "Web App", "Mobile App", "Design"];
+  // Get categories and their counts
+  const getCategories = () => {
+    const categoryCount = { 'All': projects.length };
+    
+    projects.forEach(project => {
+      const category = project.tech.includes('Figma') ? 'Design' :
+                     project.tech.includes('Python') || project.tech.includes('Transformers') || project.tech.includes('Flask') ? 'AI/ML' :
+                     project.tech.includes('React') || project.tech.includes('HTML') || project.tech.includes('Spring Boot') ? 'Web App' :
+                     'Other';
+      
+      categoryCount[category] = (categoryCount[category] || 0) + 1;
+    });
+    
+    return Object.keys(categoryCount).map(category => ({
+      name: category,
+      count: categoryCount[category]
+    }));
+  };
+
+  const categories = getCategories();
 
   // Filter projects based on active filter
   useEffect(() => {
     if (activeFilter === 'All') {
       setFilteredProjects(projects);
     } else {
-      setFilteredProjects(projects.filter(project => project.category === activeFilter));
+      setFilteredProjects(projects.filter(project => {
+        const category = project.tech.includes('Figma') ? 'Design' :
+                        project.tech.includes('Python') || project.tech.includes('Transformers') || project.tech.includes('Flask') ? 'AI/ML' :
+                        project.tech.includes('React') || project.tech.includes('HTML') || project.tech.includes('Spring Boot') ? 'Web App' :
+                        'Other';
+        return category === activeFilter;
+      }));
     }
   }, [activeFilter]);
 
@@ -346,8 +406,8 @@ const Projects = () => {
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 dark:from-cyan-500 dark:to-pink-500 mx-auto mb-6"></div>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Here's a collection of projects I've worked on, showcasing my skills in web development, 
-            mobile apps, and design. Each project represents a unique challenge and learning experience.
+            Here's a collection of projects I've worked on, ranging from AI/ML applications to web development 
+            and UI/UX design. Each project represents a unique challenge and learning experience.
           </p>
         </div>
 
@@ -355,10 +415,11 @@ const Projects = () => {
         <div className="flex flex-wrap justify-center gap-4 mb-12">
           {categories.map((category) => (
             <FilterButton
-              key={category}
-              category={category}
+              key={category.name}
+              category={category.name}
               activeFilter={activeFilter}
               onClick={setActiveFilter}
+              count={category.count}
             />
           ))}
         </div>
@@ -366,7 +427,7 @@ const Projects = () => {
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {filteredProjects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
+            <ProjectCard key={project.name} project={project} index={index} />
           ))}
         </div>
 
@@ -376,12 +437,16 @@ const Projects = () => {
             Want to see more of my work or discuss a project?
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 dark:from-cyan-500 dark:to-blue-500 text-white font-semibold rounded-full hover:from-blue-600 hover:to-purple-600 dark:hover:from-cyan-600 dark:hover:to-blue-600 transform hover:scale-105 transition-all duration-300 shadow-xl">
-              View All Projects
-            </button>
-            <button className="px-8 py-4 border-2 border-purple-500 text-purple-600 dark:text-purple-300 font-semibold rounded-full hover:bg-purple-500 hover:text-white transform hover:scale-105 transition-all duration-300">
-              Let's Collaborate
-            </button>
+            <a
+              href="https://github.com/Venessadvn"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 dark:from-cyan-500 dark:to-blue-500 text-white font-semibold rounded-full hover:from-blue-600 hover:to-purple-600 dark:hover:from-cyan-600 dark:hover:to-blue-600 transform hover:scale-105 transition-all duration-300 shadow-xl"
+            >
+              <Github className="w-5 h-5" />
+              View All on GitHub
+            </a>
+            
           </div>
         </div>
       </div>

@@ -347,12 +347,7 @@ const Skills = () => {
       color: 'from-red-500 to-orange-500', 
       proficiency: 85 
     },
-    { 
-      name: 'Node.js', 
-      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg', 
-      color: 'from-green-500 to-green-700', 
-      proficiency: 78 
-    },
+    
     { 
       name: 'MongoDB', 
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg', 
@@ -371,18 +366,7 @@ const Skills = () => {
       color: 'from-blue-500 to-blue-700', 
       proficiency: 95 
     },
-    { 
-      name: 'TypeScript', 
-      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg', 
-      color: 'from-blue-600 to-blue-800', 
-      proficiency: 70 
-    },
-    { 
-      name: 'AWS', 
-      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg', 
-      color: 'from-orange-400 to-yellow-500', 
-      proficiency: 65 
-    }
+    
   ];
 
   // Sample certificates
@@ -529,20 +513,7 @@ const Skills = () => {
           </div>
         )}
 
-        {/* Call to Action */}
-        <div className="text-center mt-16">
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-            Want to see more of my certifications or discuss collaboration?
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-full hover:from-blue-600 hover:to-purple-600 transform hover:scale-105 transition-all duration-300 shadow-xl">
-              View All Certificates
-            </button>
-            <button className="px-8 py-4 border-2 border-purple-500 text-purple-600 dark:text-purple-400 font-semibold rounded-full hover:bg-purple-500 hover:text-white transform hover:scale-105 transition-all duration-300">
-              Get In Touch
-            </button>
-          </div>
-        </div>
+        
       </div>
 
       {/* Custom Animations */}

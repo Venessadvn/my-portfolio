@@ -338,17 +338,16 @@ const StatCounter = ({ value, label, delay = 0 }) => {
 // Main About Component
 const About = () => {
   const skills = [
-    { name: 'Frontend Development', level: 90, color: 'from-blue-500 to-cyan-500' },
-    { name: 'Backend Development', level: 85, color: 'from-purple-500 to-pink-500' },
-    { name: 'UI/UX Design', level: 80, color: 'from-green-500 to-blue-500' },
-    { name: 'Mobile Development', level: 75, color: 'from-orange-500 to-red-500' }
+    { name: 'Frontend Development', level: 85, color: 'from-blue-500 to-cyan-500' },
+    { name: 'Backend Development', level: 80, color: 'from-purple-500 to-pink-500' },
+    { name: 'Machine Learning & AI (Python, NLP, Scikit-learn)', level: 75, color: 'from-green-500 to-blue-500' },
+    { name: 'Database Management', level: 68, color: 'from-orange-500 to-red-500' }
   ];
 
   const achievements = [
-    { value: 50, label: 'Projects Completed' },
-    { value: 25, label: 'Happy Clients' },
-    { value: 3, label: 'Years Experience' },
-    { value: 15, label: 'Technologies' }
+    { value: 6, label: 'Projects Completed' },
+    { value: 0, label: 'Years Experience' },
+    { value: 10, label: 'Technologies' }
   ];
 
   return (
@@ -377,7 +376,7 @@ const About = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
           {/* Animated Photo Card */}
           <AnimatedPhotoCard 
-            image="/api/placeholder/400/600" 
+            image="/images/profileImage.jpg" 
             name="Sreya"
           />
 
@@ -392,14 +391,12 @@ const About = () => {
               </p>
               <div className="space-y-4 text-gray-600 dark:text-gray-300 leading-relaxed">
                 <p>
-                  I am a Software Engineer based in West Bengal, India. I am very passionate about 
-                  improving my coding skills & developing applications & websites. I build WebApps 
-                  and Websites. i have very interest in Machine Learning and AI.  
+                  I’m a developer passionate about building interactive, user-friendly and scalable applications. I enjoy turning ideas into clean, functional solutions that not only work but also feel great to use.
+
+Along with web and app development, I’m deeply interested in Machine Learning and AI, exploring how data and intelligent systems can solve real-world problems and create smarter user experiences.
                 </p>
                 <p>
-                  Working for myself to improve my skills. Love to build Full-Stack clones. 
-                  I enjoy creating things that live on the internet, whether that be websites, 
-                  applications, or anything in between.
+                  For me, development is more than just writing code — it’s about problem-solving, designing meaningful experiences and constantly learning. Beyond coding, I love exploring design trends, experimenting with new tools and brainstorming ideas that merge creativity with technology.
                 </p>
               </div>
             </div>
@@ -423,15 +420,18 @@ const About = () => {
 
             {/* Resume Button */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-cyan-500 dark:to-blue-500 text-white font-semibold rounded-full hover:from-blue-700 hover:to-purple-700 dark:hover:from-cyan-600 dark:hover:to-blue-600 transform hover:scale-105 transition-all duration-300 shadow-xl flex items-center justify-center space-x-2">
-                <span>Resume</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-              <button className="px-8 py-4 border-2 border-purple-500 text-purple-600 dark:text-purple-300 font-semibold rounded-full hover:bg-purple-500 hover:text-white transform hover:scale-105 transition-all duration-300">
-                Download CV
-              </button>
+              <a
+  href="https://drive.google.com/file/d/17YwO94gFlHKMu3qaunxXt1aSjr4wsOi1/view?usp=drive_link"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-cyan-500 dark:to-blue-500 text-white font-semibold rounded-full hover:from-blue-700 hover:to-purple-700 dark:hover:from-cyan-600 dark:hover:to-blue-600 transform hover:scale-105 transition-all duration-300 shadow-xl flex items-center justify-center space-x-2"
+>
+  <span>Resume</span>
+  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+  </svg>
+</a>
+
             </div>
           </div>
         </div>
@@ -463,8 +463,8 @@ const About = () => {
         </div>
 
         {/* Achievements Stats */}
-        <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-3xl p-8 border border-gray-200 dark:border-gray-700">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-3x p-8 border border-gray-200 dark:border-gray-700">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-8">
             {achievements.map((achievement, index) => (
               <StatCounter 
                 key={index}

@@ -163,7 +163,8 @@ const ThreeScene = () => {
 const Home = () => {
   const typingTexts = [
     "Full Stack Developer",
-    "UI/UX Designer", 
+    "Machine Learning Enthusiast", 
+    "Web Developer",
     "Creative Problem Solver",
     "Tech Enthusiast"
   ];
@@ -191,7 +192,7 @@ const Home = () => {
                 Hello, I'm
               </h1>
               <h2 className="text-6xl lg:text-8xl font-black text-gray-900 dark:text-white drop-shadow-2xl transition-colors duration-500">
-                Sreya Dhar
+                Sreya
               </h2>
             </div>
             
@@ -205,19 +206,28 @@ const Home = () => {
             
             {/* Description */}
             <p className="text-lg lg:text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-lg transition-colors duration-500">
-              Passionate about creating beautiful, functional, and user-centered digital experiences. 
-              I bring ideas to life through code and creativity.
+              Crafting digital experiences with creativity and code.
+              Welcome to my portfolio!
             </p>
             
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <button className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 dark:from-cyan-500 dark:to-blue-500 text-white font-semibold rounded-full hover:from-blue-600 hover:to-purple-600 dark:hover:from-cyan-600 dark:hover:to-blue-600 transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 dark:hover:shadow-cyan-500/25">
-                View My Work
-              </button>
-              <button className="px-8 py-4 border-2 border-purple-500 text-purple-600 dark:text-purple-300 font-semibold rounded-full hover:bg-purple-500 hover:text-white transform hover:scale-105 transition-all duration-300">
-                Get In Touch
-              </button>
-            </div>
+<div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+  <a
+    href="#projects"
+    className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 dark:from-cyan-500 dark:to-blue-500 text-white font-semibold rounded-full hover:from-blue-600 hover:to-purple-600 dark:hover:from-cyan-600 dark:hover:to-blue-600 transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 dark:hover:shadow-cyan-500/25 text-center"
+  >
+    View My Work
+  </a>
+
+  <a
+    href="#contact"
+    className="px-8 py-4 border-2 border-purple-500 text-purple-600 dark:text-purple-300 font-semibold rounded-full hover:bg-purple-500 hover:text-white transform hover:scale-105 transition-all duration-300 text-center"
+  >
+    Get In Touch
+  </a>
+</div>
+
+
           </div>
           
           {/* Right Content - Profile Image */}
@@ -238,7 +248,7 @@ const Home = () => {
                 <div className="absolute inset-4 bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-700 dark:to-gray-800 rounded-full flex items-center justify-center overflow-hidden transition-colors duration-500">
                   {/* Replace this div with your actual image */}
                   <img 
-                    src="/api/placeholder/300/300" 
+                    src="images/profileImage.jpg" 
                     alt="Profile"
                     className="w-full h-full object-cover rounded-full"
                     onError={(e) => {
